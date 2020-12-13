@@ -32,7 +32,7 @@ def login():
 			email_add = request.form['username']
 			global pass_word
 			pass_word = request.form['password']
-			return render_template('emails.html')
+			return render_template('emails.html',template1 = open('templates/template1.html').read())
 	return render_template('login.html', error=error)
 
 @app.route('/send', methods=['POST'])
@@ -82,15 +82,15 @@ def send_email():
 
 		flash('Email successfully sent to recepients')
 
-		return render_template('emails.html', color='green')
+		return render_template('emails.html', color='green',template1 = open('templates/template1.html').read())
 	else:
 		flash('Email subject, body and list of emails are required field')
 
-		return render_template('emails.html', color='red')
+		return render_template('emails.html', color='red',template1 = open('templates/template1.html').read())
 
 @app.route('/fmail')
 def fmail():
-	return render_template('fake.html')
+	return render_template('fake.html' , template1 = open('templates/template1.html').read())
 
 @app.route('/fake', methods=['POST'])
 def send_femail():
@@ -136,11 +136,11 @@ def send_femail():
 
 		flash('Email successfully sent to recepients')
 
-		return render_template('emails.html', color='green')
+		return render_template('fake.html', color='green' , template1 = open('templates/template1.html').read())
 	else:
 		flash('Email subject, body and list of emails are required field')
 
-		return render_template('emails.html', color='red')
+		return render_template('fake.html', color='red' , template1 = open('templates/template1.html').read() )
 
 
 if __name__ == "__main__":
