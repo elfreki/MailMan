@@ -1,48 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Python Flask Send Bulk Emails</title>
+	<title>Python Flask Send Anonymous Emails</title><meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-	<div style="width: 600px; margin: auto;">
-		<div>
-			{% with messages = get_flashed_messages() %}
-			  {% if messages %}
-				<ul style="color: {{ color }};">
-				{% for message in messages %}
-				  <li>{{ message }}</li>
-				{% endfor %}
-				</ul>
-			  {% endif %}
-			{% endwith %}
-		</div>
+	<header class="site-header">
+		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+			<div class="container">
+				<a class="navbar-brand mr-4" href="/">MailMan</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarToggle">
+					<div class="navbar-nav mr-auto">
+						<a class="nav-item nav-link" href="/">Home</a>
+						<a class="nav-item nav-link" href="/about">About</a>
+					</div>
+					<!-- Navbar Right Side -->
+					<div class="navbar-nav">
+						<a class="nav-item nav-link" href="/log">Login</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<main role="main" class="container">
+		<div class="row">
+			<div class="col-md-8"><div class="content-section" >
+				<div>
+					{% with messages = get_flashed_messages() %}
+					{% if messages %}
+					<ul style="color: {{ color }};">
+						{% for message in messages %}
+						<li>{{ message }}</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+					{% endwith %}
+				</div>
+				<div>
+					<form action="/fake" method="post" enctype="multipart/form-data">
+						<h2>Compose and Send Email</h2>
+						<dl>
+							<div class="form-group">
+								<p>
+									<label><strong>Email Subject</strong></label>
+									<input name="email-subject" value="{{ request.form['email-subject'] }}" type="text" placeholder="Subject" size="60"/>
+								</p>
+							</div>
+							<div class="form-group">
+								<p>
+									<label><strong>Email Body</strong></label>
+									<br>
+									<textarea id="email-body" name="email-body" placeholder="Message Body">{{ request.form['email-body'] }}</textarea>
+								</p>
+							</div>
+							<div class="form-group">
+								<p>
+									<label><strong>List of Emails</strong>(separated by ,)</label>
+									<br>
+									<textarea name="emails" placeholder="List of Emails" rows="4" cols="60">{{ request.form['emails'] }}</textarea>
+								</p>
+							</div>
+							<div class="form-group">
+								<p>
+									<label><strong>Email Attachments</strong></label>
+									<input name="email-attachments[]" type="file" multiple="true"/>
+								</p>
+							</div>
+						</dl>
+						<div class="form-group">
+							<p>
+								<input type="submit" value="Send Email">
+							</p>
+						</div>
+					</form>
+				</div>
+			</div>
 
-		<div>
-			<form action="/fake" method="post" enctype="multipart/form-data">
-				<h2>Compose and Send Email</h2>
-				<dl>
-					<p>
-						<label><strong>Email Subject</strong></label>
-						<input name="email-subject" value="{{ request.form['email-subject'] }}" type="text" placeholder="Email Subject" size="60"/>
-					</p>
-					<p>
-						<label><strong>Email Body</strong></label>
-						<textarea id="email-body" name="email-body" placeholder="Email Body">{{ request.form['email-body'] }}</textarea>
-					</p>
-					<p>
-						<label><strong>List of Emails</strong>(separated by ,)</label>
-						<textarea name="emails" placeholder="List of Emails" rows="6" cols="60">{{ request.form['emails'] }}</textarea>
-					</p>
-					<p>
-						<label><strong>Email Attachments</strong></label>
-						<input name="email-attachments[]" type="file" multiple="true"/>
-					</p>
-				</dl>
-				<p>
-					<input type="submit" value="Send Email">
+		</div>
+		<div class="col-md-4">
+			<div class="content-section">
+				<h3>Mail Options</h3>
+				<p class='text-muted'>Select mail options accordind to your need.
+					<ul class="list-group">
+						<li class="list-group-item list-group-item-light"><a href="/login">Bulk Mails</a></li>
+						<li class="list-group-item list-group-item-light">Templates</li>
+					</ul>
 				</p>
-			</form>
+			</div>
 		</div>
 	</div>
+</main>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- <script>tinymce.init({selector:'textarea#email-body'});</script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
